@@ -1,8 +1,8 @@
 require 'rake'
 require 'rake/clean'
 require 'rake/testtask'
-require 'rake/rdoctask'
-require 'rake/gempackagetask'
+require 'rdoc/task'
+require 'rubygems/package_task'
 
 task :default => [:compile, :test]
 
@@ -22,7 +22,7 @@ end
 
 spec = Gem::Specification.new do |s|
   s.name              = 'geoip-c'
-  s.version           = "0.8.1"
+  s.version           = "0.8.2"
 
   s.authors           = ['Ryah Dahl', 'Matt Todd', 'Andy Lindeman']
   s.email             = ['alindeman@gmail.com', 'mtodd@highgroove.com']
@@ -37,7 +37,7 @@ spec = Gem::Specification.new do |s|
   s.require_path      = '.'
 end
 
-Rake::GemPackageTask.new(spec) do |p|
+Gem::PackageTask.new(spec) do |p|
   p.need_tar = true
   p.gem_spec = spec
 end
@@ -47,7 +47,7 @@ task(:compile => 'Makefile') { sh 'make' }
 file('Makefile' => "geoip.c") { ruby 'extconf.rb' }
 
 task :install => [:gem] do
-  `env ARCHFLAGS="-arch i386" gem install pkg/geoip-c-0.5.0.gem -- --with-geoip-dir=/usr/local/GeoIP`
+  `env ARCHFLAGS="-arch i386" gem install pkg/geoip-c-0.8.2.gem -- --with-geoip-dir=/usr/local/GeoIP`
 end
 
 task(:webpage) do
